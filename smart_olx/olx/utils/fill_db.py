@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from faker import Faker
 
 from olx.models import (
@@ -27,7 +28,11 @@ def create_categories():
     for category, subcategories in CATEGORIES_SUBCATEGORIES.items():
         cat = AdvCategory(title=category)
         subcats = [AdvSubCategory(title=subcat, category=cat) for subcat in subcategories]
-        cat.save()
+        try:
+            cat.save()
+        except IntegrityError as e:
+            print(f"Exception in method create_category: {e}")
+            continue
         AdvSubCategory.objects.bulk_create(subcats)
 
 

@@ -20,7 +20,7 @@ class Advertisement(models.Model):
 
 
 class AdvCategory(models.Model):
-    title = models.CharField(max_length=120)
+    title = models.CharField(max_length=120, unique=True)
 
 
 class AdvSubCategory(models.Model):
@@ -30,6 +30,9 @@ class AdvSubCategory(models.Model):
         on_delete=models.CASCADE,
         related_name="subcategories",
     )
+
+    class Meta:
+        unique_together = "title", "category"
 
 
 class Account(models.Model):
